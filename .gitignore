@@ -1,0 +1,10 @@
+**/.DS_Store
+target
+.gradle/
+build/
+out/
+/.idea/*
+vscode/
+/.aiforopenide/
+/.gradle/
+/build/
