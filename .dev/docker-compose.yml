@@ -11,11 +11,11 @@ services:
       BANK_POSTGRES_DB: bank
       BANK_POSTGRES_DB_SCHEMA: bank
       POSTGRES_PASSWORD: postgres
-    container_name: bank_db_postgres
+    container_name: my_bank_db_postgres
 
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.5
-    container_name: bank-keycloak
+    container_name: my_bank_keycloak
     command:
       - start-dev
       - --http-port=8080
@@ -25,3 +25,12 @@ services:
       KC_HOSTNAME: localhost
     ports:
       - "8080:8080"
+  consul:
+    image: hashicorp/consul:1.15.4
+    container_name: my_bank_consul
+    ports:
+      - "8500:8500"   # HTTP API и Web UI
+      - "8600:8600/tcp" # DNS (TCP)
+      - "8600:8600/udp" # DNS (UDP)
+    command: agent -dev -client=0.0.0.0 -ui
+    restart: unless-stopped

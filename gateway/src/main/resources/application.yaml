@@ -1,3 +1,38 @@
 spring:
   application:
     name: gateway
+  cloud:
+    consul:
+      discovery:
+        register: false
+        registerHealthCheck: false
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: account-service
+              uri: lb://account-service
+              predicates:
+                - Path=/account/**
+              filters:
+                  - RewritePath=/account/(?<path>.*), /$\{path}
+
+            - id: cash-service
+              uri: lb://cash-service
+              predicates:
+                - Path=/cash/**
+              filters:
+                - RewritePath=/cash/(?<path>.*), /$\{path}
+
+            - id: transfer-service
+              uri: lb://transfer-service
+              predicates:
+                - Path=/transfer/**
+              filters:
+                - RewritePath=/transfer/(?<path>.*), /$\{path}
+
+server:
+  port: ${PORT:8091}
