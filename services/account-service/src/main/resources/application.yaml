@@ -23,7 +23,6 @@ spring:
           wait-time: 30
         data-key: data
         defaultContext: application
-        profile-separator: =
   config:
     import: "optional:consul:localhost:8500"
 server:
