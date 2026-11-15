@@ -1,6 +1,22 @@
 spring:
   application:
     name: notification-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bank-realm
+
+      client:
+        registration:
+          notification-service:
+            provider: keycloak
+            client-id: notification-service
+            client-secret: { TODO }
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/bank-realm
   cloud:
     consul:
       #      host: localhost          # Адрес Consul (по умолчанию localhost)
