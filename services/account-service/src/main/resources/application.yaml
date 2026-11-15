@@ -1,6 +1,22 @@
 spring:
   application:
     name: account-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bank-realm
+
+      client:
+        registration:
+          account-service:
+            provider: keycloak
+            client-id: account-service
+            client-secret: UwwjSq0B00J8eNv8pn4D7KA6JO4AhT2M
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/bank-realm
   cloud:
     consul:
 #      host: localhost          # Адрес Consul (по умолчанию localhost)

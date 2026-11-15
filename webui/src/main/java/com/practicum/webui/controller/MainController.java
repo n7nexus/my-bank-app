@@ -1,13 +1,17 @@
 package com.practicum.webui.controller;
 
+import com.practicum.webui.dto.CashAction;
+import com.practicum.webui.dto.GetAccountResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -36,6 +40,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class MainController {
 
+    private final WebClient gatewayClient;
+
     /**
      * GET /.
      * Редирект на GET /account
@@ -54,9 +60,17 @@ public class MainController {
      */
     @GetMapping("/account")
     public String getAccount(Model model) {
+        var accountInfo = gatewayClient.get()
+                .uri("/account/")
+                .retrieve()
+                .bodyToMono(GetAccountResponseDto.class)
+                .block();
         // TODO: Заменить на то, что описано в комментарии к методу
 //        accountStub.fillModel(model, null, null);
 
+        model.addAttribute("name", accountInfo.fullName());
+        model.addAttribute("birthdate", accountInfo.birthDate().format(DateTimeFormatter.ISO_DATE));
+        model.addAttribute("sum", accountInfo.money());
         return "main";
     }
 
@@ -77,10 +91,8 @@ public class MainController {
             @RequestParam("name") String name,
             @RequestParam("birthdate") LocalDate birthdate
     ) {
-        // TODO: Заменить на то, что описано в комментарии к методу
-//        accountStub.setNameAndBirthdate(name, birthdate);
-//        accountStub.fillModel(model, null, null);
-//
+
+
         return "main";
     }
 

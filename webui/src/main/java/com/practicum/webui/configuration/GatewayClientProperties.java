@@ -7,6 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "back-client")
-public class BackClientProperties {
+public class GatewayClientProperties {
     private final String baseUrl;
 }
