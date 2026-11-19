@@ -9,7 +9,9 @@ services:
       BANK_POSTGRES_USER: bank
       BANK_POSTGRES_PASSWORD: bank
       BANK_POSTGRES_DB: bank
-      BANK_POSTGRES_DB_SCHEMA: bank
+      ACCOUNT_POSTGRES_DB_SCHEMA: account
+      TRANSFER_POSTGRES_DB_SCHEMA: transfer
+      CASH_POSTGRES_DB_SCHEMA: cash
       POSTGRES_PASSWORD: postgres
     container_name: my_bank_db_postgres
 
@@ -19,12 +21,15 @@ services:
     command:
       - start-dev
       - --http-port=8080
+      - --import-realm
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HOSTNAME: localhost
     ports:
       - "8080:8080"
+    volumes:
+      - ./keycloak/realms/bank-realm.json:/opt/keycloak/data/import/my-realm.json
 
   consul:
     image: hashicorp/consul:1.15.4

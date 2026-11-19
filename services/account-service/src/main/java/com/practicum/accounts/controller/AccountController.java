@@ -1,25 +1,33 @@
 package com.practicum.accounts.controller;
 
-import com.practicum.accounts.dto.GetAccountResponseDto;
+import com.practicum.accounts.dto.account.AccountInfo;
+import com.practicum.accounts.dto.account.AccountShortInfo;
+import com.practicum.accounts.dto.account.AccountUpdateInfo;
+import com.practicum.accounts.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class AccountController {
 
-    @PostMapping("/")
-    public void createOrUpdateAccount() {
+    private final AccountService accountService;
 
+    @PostMapping("/")
+    public void createOrUpdateAccount(@RequestBody AccountUpdateInfo accountInfo, JwtAuthenticationToken authentication) {
+        accountService.createOrUpdateAccount(authentication.getName(), accountInfo);
+    }
+
+    @GetMapping("/{login}")
+    public AccountInfo getGetAccountResponseDto(@PathVariable("login") String login) {
+        return accountService.getAccountInfo(login);
     }
 
     @GetMapping("/")
-    public GetAccountResponseDto getGetAccountResponseDto() {
-        return new GetAccountResponseDto("Denis", LocalDate.of(1999, 10, 9), BigDecimal.valueOf(100000));
+    public List<AccountShortInfo> getAccountList() {
+        return accountService.getAccountList();
     }
 }

@@ -15,15 +15,15 @@ public class NotificationService {
     public void send(List<Notification> notifications) {
         notifications.forEach(
                 n -> log.info(
-                        formatAction(n.user(), n.action(), n.details(), n.result())
+                        formatAction(n.time(), n.user(), n.action(), n.details(), n.result())
                 )
         );
     }
 
-    private static String formatAction (String user, String action, String details, String result) {
+    private static String formatAction (LocalDateTime time, String user, String action, String details, String result) {
         return String.format(
                 "[%s] User: %s, Action: %s, Details: %s, Result: %s",
-                LocalDateTime.now(), user, action, details, result
+                time, user, action, details, result
         );
     }
 }

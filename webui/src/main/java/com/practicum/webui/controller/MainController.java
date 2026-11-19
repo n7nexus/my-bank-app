@@ -1,7 +1,7 @@
 package com.practicum.webui.controller;
 
 import com.practicum.webui.dto.CashAction;
-import com.practicum.webui.dto.GetAccountResponseDto;
+import com.practicum.webui.dto.account.GetAccountResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -60,17 +62,15 @@ public class MainController {
      */
     @GetMapping("/account")
     public String getAccount(Model model) {
-        var accountInfo = gatewayClient.get()
-                .uri("/account/")
-                .retrieve()
-                .bodyToMono(GetAccountResponseDto.class)
-                .block();
-        // TODO: Заменить на то, что описано в комментарии к методу
-//        accountStub.fillModel(model, null, null);
-
-        model.addAttribute("name", accountInfo.fullName());
-        model.addAttribute("birthdate", accountInfo.birthDate().format(DateTimeFormatter.ISO_DATE));
-        model.addAttribute("sum", accountInfo.money());
+//        var accountInfo = gatewayClient.get()
+//                .uri("/account/")
+//                .retrieve()
+//                .bodyToMono(GetAccountResponseDto.class)
+//                .block();
+//
+//        model.addAttribute("name", accountInfo.fullName());
+//        model.addAttribute("birthdate", accountInfo.birthDate().format(DateTimeFormatter.ISO_DATE));
+//        model.addAttribute("sum", accountInfo.money());
         return "main";
     }
 
@@ -91,8 +91,20 @@ public class MainController {
             @RequestParam("name") String name,
             @RequestParam("birthdate") LocalDate birthdate
     ) {
+        List<String> errors = new ArrayList<>();
+        if(birthdate.plusYears(18).isAfter(LocalDate.now())) {
+            errors.add("Возраст меньше 18 лет!!!");
+        }
 
+        if(name.isBlank()) {
+            errors.add("Имя не заполнено!");
+        }
 
+        if(errors.isEmpty()) {
+
+        } else {
+            model.addAttribute("errors", errors);
+        }
         return "main";
     }
 
