@@ -7,6 +7,8 @@ plugins {
 group = "ru.practicum"
 version = "0.0.1-SNAPSHOT"
 
+val mapstructVersion = "1.6.3"
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
@@ -27,17 +29,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webclient")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-
-	implementation("org.mapstruct:mapstruct:1.6.3")
+	implementation("org.springframework.boot:spring-boot-starter-liquibase")
+	implementation("org.mapstruct:mapstruct:$mapstructVersion")
 
 	compileOnly("org.projectlombok:lombok")
 
 	runtimeOnly("org.postgresql:postgresql")
 
-	implementation("org.liquibase:liquibase-core")
 
 	annotationProcessor("org.projectlombok:lombok")
-	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+	annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
 
 //	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")

@@ -10,7 +10,7 @@ import org.mapstruct.*;
 public interface AccountMapper {
 
     @Mapping(target = "id", ignore = true)
-    Account toEntity(String login, AccountUpdateInfo dto);
+    Account toEntity(String accountId, AccountUpdateInfo dto);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntity(AccountUpdateInfo dto, @MappingTarget Account account);
     AccountInfo toDto(Account entity);

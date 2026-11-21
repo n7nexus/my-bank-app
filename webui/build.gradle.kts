@@ -7,6 +7,8 @@ plugins {
 group = "ru.practicum"
 version = "0.0.1-SNAPSHOT"
 
+val mapstructVersion = "1.6.3"
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
@@ -25,14 +27,15 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webclient")
-	implementation("org.mapstruct:mapstruct:1.6.3")
+	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
+	implementation("org.mapstruct:mapstruct:$mapstructVersion")
 
 	compileOnly("org.projectlombok:lombok")
 
 	runtimeOnly("org.postgresql:postgresql")
 
 	annotationProcessor("org.projectlombok:lombok")
-	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+	annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
 
 //	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
@@ -45,4 +48,12 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+extra["springCloudVersion"] = "2025.1.4"
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+	}
 }

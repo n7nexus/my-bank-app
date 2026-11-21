@@ -13,16 +13,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "accounts")
+@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    private String login;
+    @Column(name = "account_id", length = 100)
+    private String accountId;
+    @Column(name = "full_name", length = 250)
     private String fullName;
-    private LocalDate birthDate;
-    private BigDecimal money;
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
+    @Builder.Default
+    @Column(name = "money", nullable = false, precision = 19, scale = 2)
+    private BigDecimal money = BigDecimal.ZERO;
 
 }

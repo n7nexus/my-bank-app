@@ -2,5 +2,5 @@ package com.practicum.accounts.dto.account;
 
 import java.time.LocalDate;
 
-public record AccountUpdateInfo(String fullName, LocalDate birthDate) {
+public record AccountUpdateInfo(String fullName, LocalDate birthdate) {
 }

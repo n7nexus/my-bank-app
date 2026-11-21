@@ -1,17 +1,19 @@
 package com.practicum.webui.controller;
 
+import com.practicum.webui.client.AccountClient;
 import com.practicum.webui.dto.CashAction;
-import com.practicum.webui.dto.account.GetAccountResponseDto;
+import com.practicum.webui.dto.account.AccountUpdateInfo;
+import com.practicum.webui.service.AccountSessionStorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final WebClient gatewayClient;
+    private final AccountClient accountClient;
+    private final AccountSessionStorageService accountSessionStorageService;
 
     /**
      * GET /.
@@ -61,16 +64,20 @@ public class MainController {
      * 3. Текущего пользователя можно получить из контекста Security
      */
     @GetMapping("/account")
-    public String getAccount(Model model) {
-//        var accountInfo = gatewayClient.get()
-//                .uri("/account/")
-//                .retrieve()
-//                .bodyToMono(GetAccountResponseDto.class)
-//                .block();
-//
-//        model.addAttribute("name", accountInfo.fullName());
-//        model.addAttribute("birthdate", accountInfo.birthDate().format(DateTimeFormatter.ISO_DATE));
-//        model.addAttribute("sum", accountInfo.money());
+    public String getAccount(Model model, @AuthenticationPrincipal OidcUser oidcUser) {
+        List<String> errors = new ArrayList<>();
+        var accountInfo = accountClient.getAccountInfo(oidcUser.getPreferredUsername());
+        if(accountInfo != null) {
+            accountSessionStorageService.storeUserData(accountInfo);
+        } else {
+            accountSessionStorageService.resetUserData();
+            errors.add("Данные пользователя не заданы");
+        }
+
+        var accountsList = accountClient.getAccountList();
+        accountSessionStorageService.storeAccountList(accountsList);
+
+        accountSessionStorageService.fillModel(model, errors, null);
         return "main";
     }
 
@@ -101,7 +108,7 @@ public class MainController {
         }
 
         if(errors.isEmpty()) {
-
+            accountClient.createOrUpdateAccount(new AccountUpdateInfo(name, birthdate));
         } else {
             model.addAttribute("errors", errors);
         }

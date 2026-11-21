@@ -17,13 +17,13 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/")
-    public void createOrUpdateAccount(@RequestBody AccountUpdateInfo accountInfo, JwtAuthenticationToken authentication) {
-        accountService.createOrUpdateAccount(authentication.getName(), accountInfo);
+    public AccountInfo createOrUpdateAccount(@RequestBody AccountUpdateInfo accountInfo, JwtAuthenticationToken authentication) {
+        return accountService.createOrUpdateAccount(authentication.getToken().getClaimAsString("preferred_username"), accountInfo);
     }
 
-    @GetMapping("/{login}")
-    public AccountInfo getGetAccountResponseDto(@PathVariable("login") String login) {
-        return accountService.getAccountInfo(login);
+    @GetMapping("/{accountId}")
+    public AccountInfo getAccountInfo(@PathVariable("accountId") String accountId) {
+        return accountService.getAccountInfo(accountId);
     }
 
     @GetMapping("/")

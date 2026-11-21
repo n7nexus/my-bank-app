@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,19 +20,21 @@ public class AccountService {
     private final AccountMapper mapper;
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void createOrUpdateAccount(String login, AccountUpdateInfo accountInfo) {
-        var account = repository.getAccountByLogin(login);
+    public AccountInfo createOrUpdateAccount(String accountId, AccountUpdateInfo accountInfo) {
+        var account = repository.getAccountByAccountId(accountId);
         if(account == null) {
-            account = mapper.toEntity(login, accountInfo);
+            account = mapper.toEntity(accountId, accountInfo);
         } else {
             mapper.updateEntity(accountInfo, account);
         }
 
         repository.save(account);
+
+        return mapper.toDto(account);
     }
 
-    public AccountInfo getAccountInfo(String login) {
-        var account = repository.getAccountByLogin(login);
+    public AccountInfo getAccountInfo(String accountId) {
+        var account = repository.getAccountByAccountId(accountId);
         return mapper.toDto(account);
     }
 

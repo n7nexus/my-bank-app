@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
 
@@ -20,7 +19,7 @@ public class MoneyService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void putMoney(String login, BigDecimal amount) throws NoSuchAccountException {
-        var account = repository.getAccountByLogin(login);
+        var account = repository.getAccountByAccountId(login);
         if(account != null) {
             var current = account.getMoney();
             account.setMoney(current.add(amount));
@@ -32,7 +31,7 @@ public class MoneyService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void getMoney(String login, BigDecimal amount) throws NotEnoughMoneyException, NoSuchAccountException {
-        var account = repository.getAccountByLogin(login);
+        var account = repository.getAccountByAccountId(login);
         if(account != null) {
             var current = account.getMoney();
             if(current.compareTo(amount) > 0) {
@@ -46,7 +45,7 @@ public class MoneyService {
         }
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = {NoSuchAccountException.class, NotEnoughMoneyException.class})
     public void transferMoney(TransferRequest request) throws NoSuchAccountException, NotEnoughMoneyException {
         getMoney(request.fromAccountId(), request.amount());
         putMoney(request.toAccountId(), request.amount());
