@@ -39,6 +39,7 @@ spring:
                 - Path=/cash/**
               filters:
                 - RewritePath=/cash/(?<path>.*), /$\{path}
+                - TokenRelay=
 #                - name: JwtTokenRelay
 
             - id: transfer-service
@@ -47,6 +48,7 @@ spring:
                 - Path=/transfer/**
               filters:
                 - RewritePath=/transfer/(?<path>.*), /$\{path}
+                - TokenRelay=
 #                - name: JwtTokenRelay
 
 server:

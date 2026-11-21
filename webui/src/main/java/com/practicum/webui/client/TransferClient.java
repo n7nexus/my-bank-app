@@ -3,8 +3,10 @@ package com.practicum.webui.client;
 import com.practicum.webui.dto.cash.CashInfo;
 import com.practicum.webui.dto.transfer.TransferRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+@Service
 @RequiredArgsConstructor
 public class TransferClient {
 

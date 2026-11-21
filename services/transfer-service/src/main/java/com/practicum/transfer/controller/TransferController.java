@@ -9,13 +9,12 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/transfer")
 @RequiredArgsConstructor
 public class TransferController {
     private final AccountClient accountClient;
 
     @PostMapping("/")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') && hasAuthority('transfer.write')")
     public CashInfo transfer(@RequestBody TransferRequest request, JwtAuthenticationToken authentication) {
         if(request.fromAccountId().equals(authentication.getToken().getClaimAsString("preferred_username"))) {
             return accountClient.transfer(request);

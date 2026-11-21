@@ -50,6 +50,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
+    public static final String REDIRECT_ACCOUNT = "redirect:/account";
     private final AccountClient accountClient;
     private final CashClient cashClient;
     private final TransferClient transferClient;
@@ -62,7 +63,7 @@ public class MainController {
      */
     @GetMapping
     public String index() {
-        return "redirect:/account";
+        return REDIRECT_ACCOUNT;
     }
 
     /**
@@ -148,10 +149,11 @@ public class MainController {
 
         var cashInfo = cashClient.editCash(new CashRequest(oidcUser.getPreferredUsername(), value, action));
 
-        accountSessionStorageService.storeUserData(cashInfo);
-        accountSessionStorageService.fillModel(model, errors, null);
+//        accountSessionStorageService.storeUserData(cashInfo);
+//        accountSessionStorageService.fillModel(model, errors, null);
 
-        return "main";
+//        return "main";
+        return "redirect:/account";
     }
 
     /**
@@ -177,9 +179,10 @@ public class MainController {
 
         var cashInfo = transferClient.transfer(new TransferRequest(oidcUser.getPreferredUsername(), login, value));
 
-        accountSessionStorageService.storeUserData(cashInfo);
-        accountSessionStorageService.fillModel(model, errors, null);
+//        accountSessionStorageService.storeUserData(cashInfo);
+//        accountSessionStorageService.fillModel(model, errors, null);
 
-        return "main";
+//        return "main";
+        return "redirect:/account";
     }
 }

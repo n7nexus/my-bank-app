@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cash")
 @RequiredArgsConstructor
 public class CashController {
 
     private final AccountClient accountClient;
 
     @PostMapping("/")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') && hasAuthority('cash.ops')")
     public CashInfo editCash(@RequestBody CashRequest request, JwtAuthenticationToken authentication) {
         if(request.accountId().equals(authentication.getToken().getClaimAsString("preferred_username"))) {
             return accountClient.cashEdit(request);

@@ -12,7 +12,7 @@ spring:
           account-service:
             provider: keycloak
             client-id: account-service
-            client-secret: UwwjSq0B00J8eNv8pn4D7KA6JO4AhT2M
+            client-secret: 5SoVhuhbJMLvGwxF83SnMNLWx1voOgdz
             authorization-grant-type: client_credentials
         provider:
           keycloak:

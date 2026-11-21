@@ -16,9 +16,9 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class MoneyService {
 
-    private AccountRepository repository;
+    private final AccountRepository repository;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = {NoSuchAccountException.class, NotEnoughMoneyException.class})
     public void putMoney(String login, BigDecimal amount) throws NoSuchAccountException {
         var account = repository.getAccountByAccountId(login);
         if(account != null) {
@@ -30,7 +30,7 @@ public class MoneyService {
         }
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = {NoSuchAccountException.class, NotEnoughMoneyException.class})
     public void getMoney(String login, BigDecimal amount) throws NotEnoughMoneyException, NoSuchAccountException {
         var account = repository.getAccountByAccountId(login);
         if(account != null) {
@@ -53,6 +53,7 @@ public class MoneyService {
     }
 
     public CashInfo getCashInfo(String accountId) {
-        return
+        var acc = repository.getAccountByAccountId(accountId);
+        return new CashInfo(acc.getFullName(), acc.getMoney());
     }
 }

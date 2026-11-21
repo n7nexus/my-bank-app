@@ -1,6 +1,21 @@
 spring:
   application:
     name: transfer-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bank-realm
+      client:
+        registration:
+          transfer-service:
+            provider: keycloak
+            client-id: transfer-service
+            client-secret: iVaT4wsVERc3NMnX2nepLReCaGue5dPF
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/bank-realm
   cloud:
     consul:
       #      host: localhost          # Адрес Consul (по умолчанию localhost)
@@ -71,4 +86,6 @@ management:
     health:
       show-details: always
 
-
+bank:
+  accounts-service:
+    base-url: http://account-service
