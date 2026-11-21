@@ -1,5 +1,6 @@
 package com.practicum.accounts.controller;
 
+import com.practicum.accounts.dto.cash.CashInfo;
 import com.practicum.accounts.dto.cash.CashRequest;
 import com.practicum.accounts.dto.transfer.TransferRequest;
 import com.practicum.accounts.exception.NoSuchAccountException;
@@ -17,20 +18,20 @@ public class MoneyController {
     private final MoneyService moneyService;
 
     @PostMapping("/transfer")
-    public void transferMoney(@RequestBody TransferRequest transferRequest, JwtAuthenticationToken authentication) throws NoSuchAccountException, NotEnoughMoneyException {
-        if(transferRequest.fromAccountId().equals(authentication.getName())) {
-            moneyService.transferMoney(transferRequest);
+    public CashInfo transferMoney(@RequestBody TransferRequest transferRequest, JwtAuthenticationToken authentication) throws NoSuchAccountException, NotEnoughMoneyException {
+        moneyService.transferMoney(transferRequest);
+        return moneyService.getCashInfo(transferRequest.fromAccountId());
+    }
+
+    @PostMapping("/")
+    public CashInfo cash(@RequestBody CashRequest request, JwtAuthenticationToken authentication) throws NoSuchAccountException, NotEnoughMoneyException {
+        var accountId = authentication.getToken().getClaimAsString("preferred_username");
+        switch (request.action()) {
+            case GET -> moneyService.getMoney(accountId, request.amount());
+            case PUT -> moneyService.putMoney(accountId, request.amount());
         }
-    }
 
-    @GetMapping("/")
-    public void cashOut(@RequestBody CashRequest request, JwtAuthenticationToken authentication) throws NoSuchAccountException, NotEnoughMoneyException {
-        moneyService.getMoney(authentication.getName(), request.amount());
-    }
-
-    @PutMapping("/")
-    public void cashIn(@RequestBody CashRequest request, JwtAuthenticationToken authentication) throws NoSuchAccountException {
-        moneyService.putMoney(authentication.getName(), request.amount());
+        return moneyService.getCashInfo(accountId);
     }
 
 }

@@ -1,18 +1,24 @@
 package com.practicum.webui.controller;
 
 import com.practicum.webui.client.AccountClient;
-import com.practicum.webui.dto.CashAction;
+import com.practicum.webui.client.CashClient;
+import com.practicum.webui.client.TransferClient;
+import com.practicum.webui.dto.cash.CashAction;
 import com.practicum.webui.dto.account.AccountUpdateInfo;
+import com.practicum.webui.dto.cash.CashRequest;
+import com.practicum.webui.dto.transfer.TransferRequest;
 import com.practicum.webui.service.AccountSessionStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +51,9 @@ import java.util.List;
 public class MainController {
 
     private final AccountClient accountClient;
+    private final CashClient cashClient;
+    private final TransferClient transferClient;
+
     private final AccountSessionStorageService accountSessionStorageService;
 
     /**
@@ -108,10 +117,11 @@ public class MainController {
         }
 
         if(errors.isEmpty()) {
-            accountClient.createOrUpdateAccount(new AccountUpdateInfo(name, birthdate));
-        } else {
-            model.addAttribute("errors", errors);
+            var accountInfo = accountClient.createOrUpdateAccount(new AccountUpdateInfo(name, birthdate));
+            accountSessionStorageService.storeUserData(accountInfo);
         }
+        accountSessionStorageService.fillModel(model, errors, null);
+
         return "main";
     }
 
@@ -129,11 +139,17 @@ public class MainController {
     @PostMapping("/cash")
     public String editCash(
             Model model,
-            @RequestParam("value") int value,
-            @RequestParam("action") CashAction action
+            @RequestParam("value") BigDecimal value,
+            @RequestParam("action") CashAction action,
+            @AuthenticationPrincipal OidcUser oidcUser
     ) {
-        // TODO: Заменить на то, что описано в комментарии к методу
-//        accountStub.editCash(model, value, action);
+
+        List<String> errors = new ArrayList<>();
+
+        var cashInfo = cashClient.editCash(new CashRequest(oidcUser.getPreferredUsername(), value, action));
+
+        accountSessionStorageService.storeUserData(cashInfo);
+        accountSessionStorageService.fillModel(model, errors, null);
 
         return "main";
     }
@@ -152,11 +168,17 @@ public class MainController {
     @PostMapping("/transfer")
     public String transfer(
             Model model,
-            @RequestParam("value") int value,
-            @RequestParam("login") String login
+            @RequestParam("value") BigDecimal value,
+            @RequestParam("login") String login,
+            @AuthenticationPrincipal OidcUser oidcUser
     ) {
-        // TODO: Заменить на то, что описано в комментарии к методу
-//        accountStub.transfer(model, value, login);
+
+        List<String> errors = new ArrayList<>();
+
+        var cashInfo = transferClient.transfer(new TransferRequest(oidcUser.getPreferredUsername(), login, value));
+
+        accountSessionStorageService.storeUserData(cashInfo);
+        accountSessionStorageService.fillModel(model, errors, null);
 
         return "main";
     }

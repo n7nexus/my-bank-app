@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain transferSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain accountSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/actuator/**").permitAll();
             auth.anyRequest().authenticated();
@@ -81,10 +81,9 @@ public class SecurityConfig {
                 .map(role -> (GrantedAuthority) new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
 
-        // Добавляем кастомное право для бизнес-логики
-//        if (roles.contains("TRANSFER_WRITE")) {
-//            authorities.add(new SimpleGrantedAuthority("transfer.write"));
-//        }
+        if (roles.contains("ACCOUNTS_WRITE")) {
+            authorities.add(new SimpleGrantedAuthority("accounts.write"));
+        }
 
         return authorities;
     }

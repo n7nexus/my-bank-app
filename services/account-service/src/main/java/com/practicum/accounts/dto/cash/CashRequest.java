@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record CashRequest(@NotNull @DecimalMin(value = "0") BigDecimal amount) {
+public record CashRequest(@NotNull @DecimalMin(value = "0") BigDecimal amount, CashAction action) {
 }

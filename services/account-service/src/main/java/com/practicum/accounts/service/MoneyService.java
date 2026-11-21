@@ -1,5 +1,6 @@
 package com.practicum.accounts.service;
 
+import com.practicum.accounts.dto.cash.CashInfo;
 import com.practicum.accounts.dto.transfer.TransferRequest;
 import com.practicum.accounts.exception.NoSuchAccountException;
 import com.practicum.accounts.exception.NotEnoughMoneyException;
@@ -49,5 +50,9 @@ public class MoneyService {
     public void transferMoney(TransferRequest request) throws NoSuchAccountException, NotEnoughMoneyException {
         getMoney(request.fromAccountId(), request.amount());
         putMoney(request.toAccountId(), request.amount());
+    }
+
+    public CashInfo getCashInfo(String accountId) {
+        return
     }
 }

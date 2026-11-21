@@ -2,6 +2,7 @@ package com.practicum.webui.service;
 
 import com.practicum.webui.dto.account.AccountInfo;
 import com.practicum.webui.dto.account.AccountShortInfo;
+import com.practicum.webui.dto.cash.CashInfo;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class AccountSessionStorageService {
         sum = accountInfo.money();
     }
 
+    public void storeUserData(CashInfo cashInfo) {
+        name = cashInfo.fullName();
+        sum = cashInfo.amount();
+    }
+
     public void resetUserData() {
         name = "";
         birthdate = null;
@@ -47,4 +53,5 @@ public class AccountSessionStorageService {
         model.addAttribute("errors", errors);
         model.addAttribute("info", info);
     }
+
 }
