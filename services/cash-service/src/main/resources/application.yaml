@@ -30,7 +30,6 @@ spring:
     username: ${DB_USERNAME:bank}
     password: ${DB_PASSWORD:bank}
     driver-class-name: org.postgresql.Driver
-    schema: cash
 
     # 2. Connection Pool Tuning (HikariCP)
     hikari:
@@ -41,6 +40,7 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       connection-test-query: SELECT 1
+      schema: cash
 
     # 3. Schema Management Strategy (Core)
     jpa:
