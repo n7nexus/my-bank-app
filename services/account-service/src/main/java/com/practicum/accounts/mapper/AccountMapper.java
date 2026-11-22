@@ -11,8 +11,12 @@ import org.mapstruct.*;
 public interface AccountMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "money", ignore = true)
     Account toEntity(String accountId, AccountUpdateInfo dto);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "accountId", ignore = true)
+    @Mapping(target = "money", ignore = true)
     void updateEntity(AccountUpdateInfo dto, @MappingTarget Account account);
     AccountInfo toDto(Account entity);
     AccountShortInfo toShortDto(Account entity);

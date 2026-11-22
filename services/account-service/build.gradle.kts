@@ -2,6 +2,9 @@ plugins {
 	java
 	id("org.springframework.boot") version "4.1.2"
 	id("io.spring.dependency-management") version "1.1.7"
+
+	id("org.springframework.cloud.contract") version "5.0.1"
+	id("maven-publish")
 }
 
 group = "ru.practicum"
@@ -42,7 +45,13 @@ dependencies {
 	annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
 
 //	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier:5.0.1")
+	testImplementation("io.rest-assured:spring-mock-mvc:6.3.0") {
+		exclude(group = "org.springframework", module = "spring-webmvc")
+		exclude(group = "org.springframework", module = "spring-test")
+	}
 	testImplementation("com.h2database:h2")
 
 	testCompileOnly("org.projectlombok:lombok")
@@ -61,4 +70,26 @@ dependencyManagement {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("mavenJava") {
+			groupId = "ru.practicum"
+			artifactId = "accounts-service"
+			version = "0.0.2-SNAPSHOT"
+
+			from(components["java"])
+			artifact(tasks.named("verifierStubsJar"))
+		}
+	}
+	repositories {
+		mavenLocal()
+	}
+}
+
+contracts {
+	baseClassForTests.set(
+		"com.practicum.accounts.contract.BaseAccountContractTest"
+	)
 }
