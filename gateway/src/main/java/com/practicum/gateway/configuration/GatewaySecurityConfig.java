@@ -29,8 +29,4 @@ public class GatewaySecurityConfig {
         return http.build();
     }
 
-//    @Bean // Регистрирует фабрику фильтра JwtTokenRelay для использования в конфигурации Gateway
-//    public JwtTokenRelayGatewayFilterFactory jwtTokenRelayGatewayFilterFactory() {
-//        return new JwtTokenRelayGatewayFilterFactory();
-//    }
 }

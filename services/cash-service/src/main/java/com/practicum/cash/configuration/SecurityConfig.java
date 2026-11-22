@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain cashSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain cashSecurityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/actuator/**").permitAll();
             auth.anyRequest().authenticated();

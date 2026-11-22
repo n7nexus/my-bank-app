@@ -1,14 +1,12 @@
 package com.practicum.webui.client;
 
-import com.practicum.webui.dto.cash.CashAction;
 import com.practicum.webui.dto.cash.CashInfo;
 import com.practicum.webui.dto.cash.CashRequest;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class CashClient {
                 .block();
     }
 
-    public String accountFallback() {
-        return "Ошибка";
+    public ResponseEntity<String> accountFallback(Throwable throwable) {
+        return ResponseEntity.internalServerError().body(throwable.getMessage());
     }
 }

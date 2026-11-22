@@ -12,7 +12,7 @@ public interface OutboxRepository extends JpaRepository<OutboxEvent, Long> {
     List<OutboxEvent> findByStatus(OutboxStatus status);
     default List<OutboxEvent> findPendingEvents() {
         return findByStatus(OutboxStatus.PENDING);
-    };
+    }
 
 
 }

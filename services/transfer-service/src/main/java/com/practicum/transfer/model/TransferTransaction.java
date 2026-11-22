@@ -25,6 +25,7 @@ public class TransferTransaction {
     private String toAccountId;
     @Column(name = "amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    @Builder.Default
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private final LocalDateTime createdAt = LocalDateTime.now();
 }
