@@ -25,7 +25,7 @@ public class JwtTestConfig {
                     .header("alg", "none")
                     .subject("contract-test")
                     .claim("realm_access", Map.of(
-                            "roles", List.of("USER")
+                            "roles", List.of("USER","SERVICE","ACCOUNTS_WRITE")
                     ))
                     .issuedAt(now)
                     .expiresAt(now.plusSeconds(3600))

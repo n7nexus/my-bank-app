@@ -75,9 +75,9 @@ tasks.withType<Test> {
 publishing {
 	publications {
 		create<MavenPublication>("mavenJava") {
-			groupId = "ru.practicum"
-			artifactId = "accounts-service"
-			version = "0.0.2-SNAPSHOT"
+			groupId = "com.practicum"
+			artifactId = "account-service"
+			version = "0.0.1-SNAPSHOT"
 
 			from(components["java"])
 			artifact(tasks.named("verifierStubsJar"))
@@ -92,4 +92,8 @@ contracts {
 	baseClassForTests.set(
 		"com.practicum.accounts.contract.BaseAccountContractTest"
 	)
+}
+
+tasks.withType<org.gradle.api.publish.maven.tasks.GenerateMavenPom>().configureEach {
+	notCompatibleWithConfigurationCache("maven-publish GenerateMavenPom is not fully CC compatible")
 }
