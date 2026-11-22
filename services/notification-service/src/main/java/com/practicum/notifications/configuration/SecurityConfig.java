@@ -77,8 +77,8 @@ public class SecurityConfig {
                 .collect(Collectors.toList());
 
         // Добавляем кастомное право для бизнес-логики
-        if (roles.contains("TRANSFER_WRITE")) {
-            authorities.add(new SimpleGrantedAuthority("transfer.write"));
+        if (roles.contains("NOTIFICATION_SEND")) {
+            authorities.add(new SimpleGrantedAuthority("notification.send"));
         }
 
         return authorities;

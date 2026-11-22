@@ -1134,7 +1134,7 @@
       "protocol": "openid-connect",
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
-        "client.secret.creation.time": "1795096038",
+        "client.secret.creation.time": "1795343166",
         "backchannel.logout.session.required": "true",
         "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",

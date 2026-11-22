@@ -19,8 +19,8 @@ public class CashTransaction {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "acount_id")
-    private String acountId;
+    @Column(name = "account_id")
+    private String accountId;
     private CashAction action;
     @Column(name = "amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;

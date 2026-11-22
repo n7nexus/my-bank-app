@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
@@ -14,6 +15,7 @@ public class AccountsClientConfig {
 
     @Bean
     @LoadBalanced
+    @Primary
     public WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder();
     }
@@ -37,6 +39,7 @@ public class AccountsClientConfig {
     }
 
     @Bean
+    @Primary
     public WebClient accountWebClient(
             OAuth2AuthorizedClientManager authorizedClientManager,
             @Value("${bank.accounts-service.base-url}") String accountsServiceBaseUrl,

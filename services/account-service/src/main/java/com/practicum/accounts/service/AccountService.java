@@ -4,12 +4,16 @@ import com.practicum.accounts.dto.account.AccountInfo;
 import com.practicum.accounts.dto.account.AccountShortInfo;
 import com.practicum.accounts.dto.account.AccountUpdateInfo;
 import com.practicum.accounts.mapper.AccountMapper;
+import com.practicum.accounts.model.OutboxEvent;
 import com.practicum.accounts.repository.AccountRepository;
+import com.practicum.accounts.repository.OutboxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.json.JsonMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,7 +21,9 @@ import java.util.List;
 public class AccountService {
 
     private final AccountRepository repository;
+    private final OutboxRepository outboxRepository;
     private final AccountMapper mapper;
+    private final JsonMapper jsonMapper;
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public AccountInfo createOrUpdateAccount(String accountId, AccountUpdateInfo accountInfo) {
@@ -29,6 +35,14 @@ public class AccountService {
         }
 
         repository.save(account);
+
+        outboxRepository.save(OutboxEvent.builder()
+                .accountId(accountId)
+                .time(LocalDateTime.now())
+                .action("ACCOUNT_UPDATE")
+                .details("New Account Info: " + jsonMapper.writeValueAsString(accountInfo))
+                .result("SUCCESS")
+                .build());
 
         return mapper.toDto(account);
     }

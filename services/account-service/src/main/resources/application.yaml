@@ -94,3 +94,18 @@ logging:
         cloud:
           gateway: DEBUG
         security: DEBUG
+
+bank:
+  notification-service:
+    base-url: http://notification-service
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      notificationClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s

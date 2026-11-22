@@ -12,12 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class NotificationService {
-    public void send(List<Notification> notifications) {
-        notifications.forEach(
-                n -> log.info(
-                        formatAction(n.time(), n.user(), n.action(), n.details(), n.result())
-                )
-        );
+    public void send(Notification n) {
+        log.info(formatAction(n.time(), n.user(), n.action(), n.details(), n.result()));
     }
 
     private static String formatAction (LocalDateTime time, String user, String action, String details, String result) {
