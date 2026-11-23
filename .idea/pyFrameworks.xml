@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PyFrameworksConfiguration">
+    <configurations>
+      <StoredFrameworkConfiguration moduleId="my-bank-app.webui" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.account-service" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.transfer-service" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.gateway.main" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.webui.main" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.account-service.contractTest" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.cash-service.main" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.transfer-service.main" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.cash-service" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.gateway" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.webui.test" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.account-service.main" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.account-service.test" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.cash-service.test" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.notification-service" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.gateway.test" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.notification-service.test" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.notification-service.main" />
+      <StoredFrameworkConfiguration moduleId="my-bank-app.services.transfer-service.test" />
+    </configurations>
+  </component>
+</project>

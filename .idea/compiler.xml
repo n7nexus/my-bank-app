@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.48/6858f13541bab505384f07053c5a7b539bbfd3e3/lombok-1.18.48.jar" />
+        </processorPath>
+        <module name="my-bank-app.gateway.test" />
+        <module name="my-bank-app.services.account-service.test" />
+        <module name="my-bank-app.services.cash-service.test" />
+        <module name="my-bank-app.gateway.main" />
+        <module name="my-bank-app.services.transfer-service.test" />
+        <module name="my-bank-app.webui.test" />
+        <module name="my-bank-app.services.notification-service.test" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.48/6858f13541bab505384f07053c5a7b539bbfd3e3/lombok-1.18.48.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct-processor/1.6.3/52e345c907fbf173b376586c7f8b131d53fa5867/mapstruct-processor-1.6.3.jar" />
+        </processorPath>
+        <module name="my-bank-app.services.notification-service.main" />
+        <module name="my-bank-app.services.transfer-service.main" />
+        <module name="my-bank-app.services.account-service.main" />
+        <module name="my-bank-app.services.cash-service.main" />
+        <module name="my-bank-app.webui.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="21">
+      <module name="my-bank-app.main" target="25" />
+      <module name="my-bank-app.test" target="25" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="my-bank-app.accounts-service" options="-parameters" />
+      <module name="my-bank-app.accounts-service.main" options="-parameters" />
+      <module name="my-bank-app.accounts-service.test" options="-parameters" />
+      <module name="my-bank-app.cash-service" options="-parameters" />
+      <module name="my-bank-app.cash-service.main" options="-parameters" />
+      <module name="my-bank-app.cash-service.test" options="-parameters" />
+      <module name="my-bank-app.gateway" options="-parameters" />
+      <module name="my-bank-app.gateway.main" options="-parameters" />
+      <module name="my-bank-app.gateway.test" options="-parameters" />
+      <module name="my-bank-app.notifications-service" options="-parameters" />
+      <module name="my-bank-app.notifications-service.main" options="-parameters" />
+      <module name="my-bank-app.notifications-service.test" options="-parameters" />
+      <module name="my-bank-app.services.account-service" options="-parameters" />
+      <module name="my-bank-app.services.account-service.contractTest" options="-parameters" />
+      <module name="my-bank-app.services.account-service.main" options="-parameters" />
+      <module name="my-bank-app.services.account-service.test" options="-parameters" />
+      <module name="my-bank-app.services.accounts-service.main" options="-parameters" />
+      <module name="my-bank-app.services.accounts-service.test" options="-parameters" />
+      <module name="my-bank-app.services.cash-service" options="-parameters" />
+      <module name="my-bank-app.services.cash-service.main" options="-parameters" />
+      <module name="my-bank-app.services.cash-service.test" options="-parameters" />
+      <module name="my-bank-app.services.main" options="-parameters" />
+      <module name="my-bank-app.services.notification-service" options="-parameters" />
+      <module name="my-bank-app.services.notification-service.main" options="-parameters" />
+      <module name="my-bank-app.services.notification-service.test" options="-parameters" />
+      <module name="my-bank-app.services.notifications-service.main" options="-parameters" />
+      <module name="my-bank-app.services.notifications-service.test" options="-parameters" />
+      <module name="my-bank-app.services.test" options="-parameters" />
+      <module name="my-bank-app.services.transfer-service" options="-parameters" />
+      <module name="my-bank-app.services.transfer-service.main" options="-parameters" />
+      <module name="my-bank-app.services.transfer-service.test" options="-parameters" />
+      <module name="my-bank-app.transfer-service" options="-parameters" />
+      <module name="my-bank-app.transfer-service.main" options="-parameters" />
+      <module name="my-bank-app.transfer-service.test" options="-parameters" />
+      <module name="my-bank-app.webui" options="-parameters" />
+      <module name="my-bank-app.webui.main" options="-parameters" />
+      <module name="my-bank-app.webui.test" options="-parameters" />
+    </option>
+  </component>
+</project>

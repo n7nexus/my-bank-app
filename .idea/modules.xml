@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/my-bank-app.gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/my-bank-app.gateway.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/my-bank-app.gateway.test.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/my-bank-app.gateway.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/account-service/my-bank-app.services.account-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/account-service/my-bank-app.services.account-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/account-service/my-bank-app.services.account-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/account-service/my-bank-app.services.account-service.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/cash-service/my-bank-app.services.cash-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/cash-service/my-bank-app.services.cash-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/cash-service/my-bank-app.services.cash-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/cash-service/my-bank-app.services.cash-service.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/notification-service/my-bank-app.services.notification-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/notification-service/my-bank-app.services.notification-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/notification-service/my-bank-app.services.notification-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/notification-service/my-bank-app.services.notification-service.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/transfer-service/my-bank-app.services.transfer-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/services/transfer-service/my-bank-app.services.transfer-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/transfer-service/my-bank-app.services.transfer-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/services/transfer-service/my-bank-app.services.transfer-service.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webui/my-bank-app.webui.main.iml" filepath="$PROJECT_DIR$/.idea/modules/webui/my-bank-app.webui.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/webui/my-bank-app.webui.test.iml" filepath="$PROJECT_DIR$/.idea/modules/webui/my-bank-app.webui.test.iml" />
+    </modules>
+  </component>
+</project>
