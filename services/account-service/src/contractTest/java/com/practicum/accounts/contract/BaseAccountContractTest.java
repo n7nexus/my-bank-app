@@ -25,7 +25,12 @@ import static org.mockito.AdditionalMatchers.gt;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.config.import=",                    // Явно очистить, без импорта
+        "spring.cloud.consul.enabled=false",
+        "spring.cloud.consul.config.watch.enabled=false",
+        "spring.cloud.consul.discovery.catalog-services-watch.enabled=false"
+})
 @AutoConfigureMockMvc
 @ActiveProfiles("contract-test")
 @ImportAutoConfiguration(exclude = LiquibaseAutoConfiguration.class)

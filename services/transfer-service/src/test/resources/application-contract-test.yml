@@ -1,3 +1,17 @@
 bank:
   account-service:
-    base-url: http://localhost:8085
+    base-url: http://localhost:8086
+
+spring:
+  cloud:
+    consul:
+      enabled: false
+      config:
+        enabled: false
+        import-check:
+          enabled: false
+        fail-fast: false
+        watch:
+          enabled: false
+      discovery:
+        enabled: false

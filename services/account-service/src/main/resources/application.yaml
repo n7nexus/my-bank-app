@@ -19,19 +19,19 @@ spring:
           account-service:
             provider: keycloak
             client-id: account-service
-            client-secret: ${ACCOUNT_SERVICE_CLIENT_SECRET:5SoVhuhbJMLvGwxF83SnMNLWx1voOgdz} #hardcoded value for local dev
+            client-secret: ${SERVICE_CLIENT_SECRET:5SoVhuhbJMLvGwxF83SnMNLWx1voOgdz} #hardcoded value for local dev
             authorization-grant-type: client_credentials
         provider:
           keycloak:
             issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
   config:
-    import: "consul:"
+    import: "optional:consul:"
   cloud:
     consul:
       host: ${consul.address}
       port: ${consul.port}
       discovery:
-        ip-address: ${consul.address}
+#        ip-address: ${consul.address} //для локальной разработки
         prefer-ip-address: true
         enabled: true
         health-check-interval: 15s

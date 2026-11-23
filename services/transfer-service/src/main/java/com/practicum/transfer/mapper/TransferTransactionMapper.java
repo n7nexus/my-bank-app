@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TransferTransactionMapper {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     TransferTransaction toEntity(TransferRequest dto);
 }

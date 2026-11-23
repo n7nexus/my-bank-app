@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("contract-test")
 @AutoConfigureStubRunner(
-        ids = "com.practicum:account-service:+:stubs:8085",
+        ids = "com.practicum:account-service:+:stubs:8086",
         stubsMode = StubRunnerProperties.StubsMode.LOCAL
 )
 

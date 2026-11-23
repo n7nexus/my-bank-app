@@ -641,6 +641,66 @@
       },
       "notBefore": 0,
       "groups": []
+    },
+    {
+      "username": "tu1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "User1",
+      "email": "test-user1@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "USER",
+        "TRANSFER_WRITE",
+        "CASH_OPS"
+      ]
+    },
+    {
+      "username": "tu2",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "User2",
+      "email": "test-user2@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "USER",
+        "TRANSFER_WRITE",
+        "CASH_OPS"
+      ]
+    },
+    {
+      "username": "tu3",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "User3",
+      "email": "test-user3@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "USER",
+        "TRANSFER_WRITE",
+        "CASH_OPS"
+      ]
     }
   ],
   "scopeMappings": [

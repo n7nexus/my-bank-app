@@ -13,30 +13,49 @@ services:
       TRANSFER_POSTGRES_DB_SCHEMA: transfer
       CASH_POSTGRES_DB_SCHEMA: cash
       POSTGRES_PASSWORD: postgres
-    container_name: my_bank_db_postgres
+    container_name: bank-db
+    networks:
+      - shared_net
 
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.5
-    container_name: my_bank_keycloak
+    image: quay.io/keycloak/keycloak:25.0.5-0
+    container_name: keycloak
     command:
       - start-dev
       - --http-port=8080
       - --import-realm
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: localhost
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      # Browser-facing hostname for local development.
+      - KC_HOSTNAME=http://keycloak:8080
+      # Allow backend backchannel endpoints (token/jwks) to use internal request host.
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=false
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_BACKCHANNEL_DYNAMIC=true
+      - JAVA_OPTS_APPEND=-Dquarkus.http.http2=false
     ports:
       - "8080:8080"
     volumes:
-      - ./keycloak/realms/bank-realm.json:/opt/keycloak/data/import/my-realm.json
+      - ./keycloak/realms/:/opt/keycloak/data/import/
+    networks:
+      - shared_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   consul:
     image: hashicorp/consul:1.15.4
-    container_name: my_bank_consul
+    container_name: consul
     ports:
       - "8500:8500"   # HTTP API и Web UI
       - "8600:8600/tcp" # DNS (TCP)
       - "8600:8600/udp" # DNS (UDP)
     command: agent -dev -client=0.0.0.0 -ui
     restart: unless-stopped
+    networks:
+      - shared_net
+
+networks:
+  shared_net:
+    name: shared_net # точное имя сети в Docker
+    driver: bridge

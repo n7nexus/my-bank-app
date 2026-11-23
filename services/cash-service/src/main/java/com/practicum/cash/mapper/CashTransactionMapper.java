@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CashTransactionMapper {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     CashTransaction toEntity(CashRequest dto);
 }

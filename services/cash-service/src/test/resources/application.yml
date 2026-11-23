@@ -1,0 +1,26 @@
+spring:
+  config:
+    import: ""
+  cloud:
+    consul:
+      enabled: false
+      config:
+        enabled: false
+        import-check:
+          enabled: false
+        fail-fast: false
+        watch:
+          enabled: false
+      discovery:
+        enabled: false
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      accountClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
