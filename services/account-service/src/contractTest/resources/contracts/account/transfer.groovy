@@ -64,5 +64,32 @@ import org.springframework.cloud.contract.spec.Contract
                 status BAD_REQUEST()
             }
         },
+        Contract.make {
+            description 'Cash edit mock put (UNSUCCESSFUL)'
+            name 'cash_transfer_bad_request_no_such_account'
+
+            request {
+                method POST()
+                url '/money/transfer'
+                headers {
+                    contentType(applicationJson())
+                    header 'Authorization', value(
+                            // Для консьюмера (WireMock): любой Bearer-токен
+                            consumer(regex('Bearer\\s+.+')),
+                            // Для провайдера (MockMvc-тест): ровно этот токен
+                            producer('Bearer test-token')
+                    )
+                }
+                body (
+                        fromAccountId: 'tu1',
+                        toAccountId: 'tu3',
+                        amount: 100
+                )
+            }
+
+            response {
+                status BAD_REQUEST()
+            }
+        },
 ]
 

@@ -55,8 +55,20 @@ public abstract class BaseAccountContractTest {
                             !listOfActiveAccs.contains(req.fromAccountId()) || !listOfActiveAccs.contains(req.toAccountId())
                         )
                 );
-        doNothing().when(moneyService).transferMoney(argThat(req -> BigDecimal.valueOf(400).compareTo(req.amount()) >= 0));
-        doThrow(NotEnoughMoneyException.class).when(moneyService).transferMoney(argThat(req -> BigDecimal.valueOf(400).compareTo(req.amount()) < 0));
+        doNothing().when(moneyService).transferMoney(
+                argThat(req ->
+                        listOfActiveAccs.contains(req.fromAccountId())
+                                && listOfActiveAccs.contains(req.toAccountId())
+                                && BigDecimal.valueOf(400).compareTo(req.amount()) >= 0
+                )
+        );
+        doThrow(NotEnoughMoneyException.class).when(moneyService).transferMoney(
+                argThat(req ->
+                        listOfActiveAccs.contains(req.fromAccountId())
+                                && listOfActiveAccs.contains(req.toAccountId())
+                                && BigDecimal.valueOf(400).compareTo(req.amount()) < 0
+                )
+        );
 
         doThrow(NoSuchAccountException.class).when(moneyService).getMoney(argThat(arg -> !listOfActiveAccs.contains(arg)), any(BigDecimal.class));
         doThrow(NoSuchAccountException.class).when(moneyService).putMoney(argThat(arg -> !listOfActiveAccs.contains(arg)), any(BigDecimal.class));

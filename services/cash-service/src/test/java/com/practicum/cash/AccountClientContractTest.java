@@ -10,11 +10,14 @@ import org.springframework.boot.liquibase.autoconfigure.LiquibaseAutoConfigurati
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("contract-test")
@@ -30,11 +33,37 @@ public class AccountClientContractTest {
     private AccountClient accountsClient;
 
     @Test
-    void shouldMatchContractWhenCheckingOwner() {
+    void shoudPutCashSuccessfully() {
         var result = accountsClient.cashEdit(new CashRequest("tu1", BigDecimal.valueOf(200), CashAction.PUT));
 
 
         assertEquals("Денис", result.fullName());
-        assertEquals(BigDecimal.valueOf(200), result.amount());
+        assertEquals(BigDecimal.valueOf(400), result.amount());
+    }
+
+    @Test
+    void shoudPutCashUnsuccessfully() {
+        var exception = assertThrows(WebClientResponseException.class, () -> accountsClient.cashEdit(new CashRequest("tu3", BigDecimal.valueOf(200), CashAction.PUT)));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    }
+
+    @Test
+    void shoudGetCashSuccessfully() {
+        var result = accountsClient.cashEdit(new CashRequest("tu1", BigDecimal.valueOf(200), CashAction.GET));
+
+        assertEquals("Денис", result.fullName());
+        assertEquals(BigDecimal.valueOf(400), result.amount());
+    }
+
+    @Test
+    void shoudGetCashUnsuccessfullyNotEnoughMoney() {
+        var exception = assertThrows(WebClientResponseException.class, () -> accountsClient.cashEdit(new CashRequest("tu1", BigDecimal.valueOf(500), CashAction.GET)));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    }
+
+    @Test
+    void shoudGetCashUnsuccessfullyNoSuchAccount() {
+        var exception = assertThrows(WebClientResponseException.class, () -> accountsClient.cashEdit(new CashRequest("tu3", BigDecimal.valueOf(200), CashAction.GET)));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 }
