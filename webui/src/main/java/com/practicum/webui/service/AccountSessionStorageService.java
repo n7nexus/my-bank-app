@@ -54,4 +54,8 @@ public class AccountSessionStorageService {
         model.addAttribute("info", info);
     }
 
+    public void fillModel(Model model, @Nullable List<String> errors) {
+        fillModel(model, errors, (String) model.getAttribute("info"));
+    }
+
 }

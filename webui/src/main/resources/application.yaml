@@ -1,15 +1,8 @@
 server:
-  port: 8084
+  port: ${PORT:8084}
 
 back-client:
-  base-url: http://localhost:8091
-
-logging:
-  level:
-    root: INFO
-    org:
-      springframework:
-        security: DEBUG
+  base-url: ${GATEWAY_URL:http://localhost:8091}
 
 spring:
   security:
@@ -25,7 +18,7 @@ spring:
             provider: keycloak
         provider:
           keycloak:
-            issuer-uri: http://localhost:8080/realms/bank-realm
+            issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
 
 resilience4j:
   circuitbreaker:
@@ -38,7 +31,12 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
 
-
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh
+    health:
+      show-details: always
 
 

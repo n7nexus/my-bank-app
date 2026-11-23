@@ -1,22 +1,36 @@
+server:
+  port: ${PORT:8091}
+
+consul:
+  address: ${CONSUL_ADDRESS:host.docker.internal}
+  port: ${CONSUL_PORT:8500}
+
 spring:
   application:
     name: gateway
-#  main:
-#    web-application-type: reactive
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/bank-realm
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
   config:
-    import: "optional:consul:localhost:8500"
+    import: "consul:"
   cloud:
     consul:
+      host: ${consul.address}
+      port: ${consul.port}
       discovery:
         register: false
         registerHealthCheck: false
       config:
-        enabled: false
+        format: YAML
+        enabled: true            # Включаем Consul Config для внешней конфигурации
+        prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
+        watch:
+          enabled: true
+          wait-time: 30
+        data-key: data
+        defaultContext: application
     gateway:
       server:
         webflux:
@@ -31,7 +45,6 @@ spring:
               filters:
                   - RewritePath=/account/(?<path>.*), /$\{path}
                   - TokenRelay=
-#                  - name: JwtTokenRelay
 
             - id: cash-service
               uri: lb://cash-service
@@ -40,7 +53,6 @@ spring:
               filters:
                 - RewritePath=/cash/(?<path>.*), /$\{path}
                 - TokenRelay=
-#                - name: JwtTokenRelay
 
             - id: transfer-service
               uri: lb://transfer-service
@@ -49,16 +61,11 @@ spring:
               filters:
                 - RewritePath=/transfer/(?<path>.*), /$\{path}
                 - TokenRelay=
-#                - name: JwtTokenRelay
 
-server:
-  port: ${PORT:8091}
-
-logging:
-  level:
-    root: INFO
-    org:
-      springframework:
-        cloud:
-          gateway: DEBUG
-        security: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh
+    health:
+      show-details: always

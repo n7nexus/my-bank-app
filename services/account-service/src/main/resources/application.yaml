@@ -1,3 +1,11 @@
+server:
+  port: ${PORT:8100}
+  address: 0.0.0.0
+  
+consul:
+  address: ${CONSUL_ADDRESS:host.docker.internal}
+  port: ${CONSUL_PORT:8500}
+
 spring:
   application:
     name: account-service
@@ -5,50 +13,45 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/bank-realm
-
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
       client:
         registration:
           account-service:
             provider: keycloak
             client-id: account-service
-            client-secret: 5SoVhuhbJMLvGwxF83SnMNLWx1voOgdz
+            client-secret: ${ACCOUNT_SERVICE_CLIENT_SECRET:5SoVhuhbJMLvGwxF83SnMNLWx1voOgdz} #hardcoded value for local dev
             authorization-grant-type: client_credentials
         provider:
           keycloak:
-            issuer-uri: http://localhost:8080/realms/bank-realm
+            issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
+  config:
+    import: "consul:"
   cloud:
     consul:
-#      host: localhost          # Адрес Consul (по умолчанию localhost)
-#      port: 8500               # Порт Consul (8500 по умолчанию)
+      host: ${consul.address}
+      port: ${consul.port}
       discovery:
-        ip-address: host.docker.internal
+        ip-address: ${consul.address}
         prefer-ip-address: true
         enabled: true
-        # Интервал проверки (по умолчанию 10s)
         health-check-interval: 15s
-        # Таймаут проверки (если сервис медленно запускается, можно увеличить)
         health-check-timeout: 3s
-#        service-name: transfers  # Необязательно, по умолчанию берётся spring.application.name
       config:
         format: YAML
         enabled: true            # Включаем Consul Config для внешней конфигурации
         prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
         watch:
-          enabled: false
+          enabled: true
           wait-time: 30
         data-key: data
         defaultContext: application
-  config:
-    import: "optional:consul:localhost:8500"
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/bank
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/bank}
     username: ${DB_USERNAME:bank}
     password: ${DB_PASSWORD:bank}
     driver-class-name: org.postgresql.Driver
 
-    # 2. Connection Pool Tuning (HikariCP)
     hikari:
       pool-name: MyHikariPool
       maximum-pool-size: 20
@@ -59,9 +62,7 @@ spring:
       connection-test-query: SELECT 1
       schema: account
 
-    # 3. Schema Management Strategy (Core)
     jpa:
-      # Key point: Disable Hibernate's automatic table creation, use validate or none
       hibernate:
         ddl-auto: validate
       show-sql: true
@@ -73,39 +74,14 @@ spring:
     liquibase-schema: liquibase
     change-log: classpath:/db/changelog/changelog-master.yaml
 
-server:
-  port: 8100
-  address: 0.0.0.0
-
 management:
   endpoints:
     web:
       exposure:
-#        include: mappings
         include: health,refresh
     health:
       show-details: always
 
-logging:
-  level:
-    root: INFO
-    org:
-      springframework:
-        cloud:
-          gateway: DEBUG
-        security: DEBUG
-
 bank:
   notification-service:
-    base-url: http://notification-service
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      notificationClient:
-        registerHealthIndicator: true
-        slidingWindowType: COUNT_BASED
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 5
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10s
+    base-url: ${NOTIFICATION_SERVICE_URL:http://notification-service}

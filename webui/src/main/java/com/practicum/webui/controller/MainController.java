@@ -55,6 +55,7 @@ public class MainController {
 
     public static final String REDIRECT_ACCOUNT = "redirect:/account";
     public static final String ERRORS_ATTRIBUTE = "errors";
+    public static final String INFO_ATTRIBUTE = "info";
     private final AccountClient accountClient;
     private final CashClient cashClient;
     private final TransferClient transferClient;
@@ -100,7 +101,7 @@ public class MainController {
         var accountsList = accountClient.getAccountList();
         accountSessionStorageService.storeAccountList(accountsList);
 
-        accountSessionStorageService.fillModel(model, errors, null);
+        accountSessionStorageService.fillModel(model, errors);
         return "main";
     }
 
@@ -123,7 +124,8 @@ public class MainController {
     public String editAccount(
             Model model,
             @RequestParam("name") String name,
-            @RequestParam("birthdate") LocalDate birthdate
+            @RequestParam("birthdate") LocalDate birthdate,
+            RedirectAttributes redirectAttributes
     ) {
         List<String> errors = new ArrayList<>();
         if(birthdate.plusYears(18).isAfter(LocalDate.now())) {
@@ -136,11 +138,15 @@ public class MainController {
 
         if(errors.isEmpty()) {
             var accountInfo = accountClient.createOrUpdateAccount(new AccountUpdateInfo(name, birthdate));
-            accountSessionStorageService.storeUserData(accountInfo);
+//            accountSessionStorageService.storeUserData(accountInfo);
+            redirectAttributes.addFlashAttribute(INFO_ATTRIBUTE, "Данные успешно обновлены");
         }
-        accountSessionStorageService.fillModel(model, errors, null);
+//        accountSessionStorageService.fillModel(model, errors, null);
+        redirectAttributes.addFlashAttribute(ERRORS_ATTRIBUTE, errors);
 
-        return "main";
+
+//        return "main";
+        return REDIRECT_ACCOUNT;
     }
 
     /**
@@ -170,6 +176,8 @@ public class MainController {
         }
 
         redirectAttributes.addFlashAttribute(ERRORS_ATTRIBUTE, errors);
+        redirectAttributes.addFlashAttribute(INFO_ATTRIBUTE, "Операция выполнена успешно");
+
         return REDIRECT_ACCOUNT;
     }
 
@@ -201,6 +209,7 @@ public class MainController {
         }
 
         redirectAttributes.addFlashAttribute(ERRORS_ATTRIBUTE, errors);
+        redirectAttributes.addFlashAttribute(INFO_ATTRIBUTE, "Перевод выполнен успешно");
 
         return REDIRECT_ACCOUNT;
     }
