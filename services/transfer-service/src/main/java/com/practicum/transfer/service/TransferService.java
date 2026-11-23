@@ -3,7 +3,6 @@ package com.practicum.transfer.service;
 import com.practicum.transfer.client.AccountClient;
 import com.practicum.transfer.dto.CashInfo;
 import com.practicum.transfer.dto.TransferRequest;
-import com.practicum.transfer.mapper.OutboxMapper;
 import com.practicum.transfer.mapper.TransferTransactionMapper;
 import com.practicum.transfer.model.OutboxEvent;
 import com.practicum.transfer.repository.OutboxRepository;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 public class TransferService {
     private final TransferTransactionRepository repository;
     private final TransferTransactionMapper mapper;
-    private final OutboxMapper outboxMapper;
     private final OutboxRepository outboxRepository;
     private final AccountClient accountClient;
 

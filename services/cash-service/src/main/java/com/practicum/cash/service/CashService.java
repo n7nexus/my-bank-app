@@ -4,7 +4,6 @@ import com.practicum.cash.client.AccountClient;
 import com.practicum.cash.dto.CashInfo;
 import com.practicum.cash.dto.CashRequest;
 import com.practicum.cash.mapper.CashTransactionMapper;
-import com.practicum.cash.mapper.OutboxMapper;
 import com.practicum.cash.model.OutboxEvent;
 import com.practicum.cash.repository.CashTransactionRepository;
 import com.practicum.cash.repository.OutboxRepository;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 public class CashService {
     private final CashTransactionRepository repository;
     private final CashTransactionMapper mapper;
-    private final OutboxMapper outboxMapper;
     private final OutboxRepository outboxRepository;
     private final AccountClient accountClient;
 
