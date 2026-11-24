@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bank-realm
+  config:
+    import: "optional:consul:localhost:8500"
+  cloud:
+    consul:
+      discovery:
+        register: false
+        registerHealthCheck: false
+      config:
+        enabled: false
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: account-service
+              uri: lb://account-service
+              predicates:
+                - Path=/account/**
+              filters:
+                - RewritePath=/account/(?<path>.*), /$\{path}
+                - TokenRelay=
+
+            - id: cash-service
+              uri: lb://cash-service
+              predicates:
+                - Path=/cash/**
+              filters:
+                - RewritePath=/cash/(?<path>.*), /$\{path}
+                - TokenRelay=
+
+            - id: transfer-service
+              uri: lb://transfer-service
+              predicates:
+                - Path=/transfer/**
+              filters:
+                - RewritePath=/transfer/(?<path>.*), /$\{path}
+                - TokenRelay=
+
+server:
+  port: ${PORT:8091}
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: DEBUG
+        security: DEBUG

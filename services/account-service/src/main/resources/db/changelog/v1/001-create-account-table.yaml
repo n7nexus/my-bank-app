@@ -1,0 +1,30 @@
+databaseChangeLog:
+    - changeSet:
+        id: 1
+        author: Denis Sablukov
+        changes:
+            - createTable:
+                tableName: account
+                columns:
+                    - column:
+                        name: id
+                        type: bigint
+                        autoIncrement: true
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: account_id
+                        type: varchar(100)
+                    - column:
+                        name: full_name
+                        type: varchar(250)
+                    - column:
+                        name: birthdate
+                        type: date
+                    - column:
+                        name: money
+                        type: decimal
+                        defaultValue: 0
+                        constraints:
+                            nullable: false

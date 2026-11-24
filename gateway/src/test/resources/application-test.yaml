@@ -1,0 +1,13 @@
+spring:
+  config:
+    import: "none"           # Отключить импорт Consul Config
+  cloud:
+    consul:
+      enabled: false
+      config:
+        enabled: false
+        fail-fast: false
+        watch:
+          enabled: false
+      discovery:
+        enabled: false
