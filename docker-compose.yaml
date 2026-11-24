@@ -1,0 +1,99 @@
+services:
+  notification:
+    container_name: notification
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    image: notification
+    restart: on-failure
+    networks:
+      - shared_net
+    environment:
+      - CONSUL_ADDRESS=${CONSUL_ADDRESS:-consul}
+      - JWT_ISSUER_URI=${JWT_ISSUER_URI:-http://keycloak:8080/realms/bank-realm}
+      - SERVICE_CLIENT_SECRET=gt5W5jlZHw3iu0BAGJE0P8kJG9EzFRzR
+  account:
+    container_name: account
+    build:
+      context: ./services/account-service
+      dockerfile: Dockerfile
+    image: account
+    restart: on-failure
+    depends_on:
+      - notification
+    networks:
+      - shared_net
+    environment:
+      - CONSUL_ADDRESS=${CONSUL_ADDRESS:-consul}
+      - JWT_ISSUER_URI=${JWT_ISSUER_URI:-http://keycloak:8080/realms/bank-realm}
+      - DB_URL=${DB_URL:-jdbc:postgresql://bank-db:5432/bank}
+      - SERVICE_CLIENT_SECRET=dNc8q3gFBypsGc3rtMYYmMX4FKOAU9Jl
+  cash:
+    container_name: cash
+    build:
+      context: ./services/cash-service
+      dockerfile: Dockerfile
+    image: cash
+    restart: on-failure
+    depends_on:
+      - account
+    networks:
+      - shared_net
+    environment:
+      - CONSUL_ADDRESS=${CONSUL_ADDRESS:-consul}
+      - JWT_ISSUER_URI=${JWT_ISSUER_URI:-http://keycloak:8080/realms/bank-realm}
+      - DB_URL=${DB_URL:-jdbc:postgresql://bank-db:5432/bank}
+      - SERVICE_CLIENT_SECRET=ju7aw9uTfgpqi2R0KH5qteOodhyYoH3M
+  transfer:
+    container_name: transfer
+    build:
+      context: ./services/transfer-service
+      dockerfile: Dockerfile
+    image: transfer
+    restart: on-failure
+    depends_on:
+      - account
+    networks:
+      - shared_net
+    environment:
+      - CONSUL_ADDRESS=${CONSUL_ADDRESS:-consul}
+      - JWT_ISSUER_URI=${JWT_ISSUER_URI:-http://keycloak:8080/realms/bank-realm}
+      - DB_URL=${DB_URL:-jdbc:postgresql://bank-db:5432/bank}
+      - SERVICE_CLIENT_SECRET=tq2z9TN6oySbhZgPqCRDYXkgc9TJqJJ6
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    image: gateway
+    restart: on-failure
+    depends_on:
+      - account
+      - cash
+      - transfer
+    networks:
+      - shared_net
+    environment:
+      - CONSUL_ADDRESS=${CONSUL_ADDRESS:-consul}
+      - JWT_ISSUER_URI=${JWT_ISSUER_URI:-http://keycloak:8080/realms/bank-realm}
+      - DB_URL=${DB_URL:-jdbc:postgresql://bank-db:5432/bank}
+  ui:
+    container_name: ui
+    build:
+      context: ./webui
+      dockerfile: Dockerfile
+    image: ui
+#    restart: on-failure
+    depends_on:
+      - gateway
+    ports:
+      - "8084:8084"
+    networks:
+      - shared_net
+    environment:
+      - JWT_ISSUER_URI=${JWT_ISSUER_URI:-http://keycloak:8080/realms/bank-realm}
+      - GATEWAY_URL=${GATEWAY_URL:-http://gateway:8091}
+networks:
+  shared_net:
+    external: true
+    name: shared_net

@@ -1,0 +1,55 @@
+server:
+  port: ${PORT:8130}
+  address: 0.0.0.0
+
+consul:
+  address: ${CONSUL_ADDRESS:host.docker.internal}
+  port: ${CONSUL_PORT:8500}
+
+spring:
+  application:
+    name: notification-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
+      client:
+        registration:
+          notification-service:
+            provider: keycloak
+            client-id: notification-service
+            client-secret: ${SERVICE_CLIENT_SECRET::kmem4rZ7Lv2RXN3G5Z79UbFCfDvTZw6z} #hardcoded value for local dev
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
+  config:
+    import: "optional:consul:"
+  cloud:
+    consul:
+      host: ${consul.address}
+      port: ${consul.port}
+      discovery:
+#        ip-address: ${consul.address} //для локальной разработки
+        prefer-ip-address: true
+        enabled: true
+        health-check-interval: 15s
+        health-check-timeout: 3s
+      config:
+        format: YAML
+        enabled: true            # Включаем Consul Config для внешней конфигурации
+        prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
+        watch:
+          enabled: true
+          wait-time: 30
+        data-key: data
+        defaultContext: application
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh
+    health:
+      show-details: always

@@ -1,0 +1,15 @@
+spring:
+  config:
+    import: ""
+  cloud:
+    consul:
+      enabled: false
+      config:
+        enabled: false
+        import-check:
+          enabled: false
+        fail-fast: false
+        watch:
+          enabled: false
+      discovery:
+        enabled: false

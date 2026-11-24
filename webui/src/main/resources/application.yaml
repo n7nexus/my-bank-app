@@ -1,0 +1,42 @@
+server:
+  port: ${PORT:8084}
+
+back-client:
+  base-url: ${GATEWAY_URL:http://localhost:8091}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: bank-ui
+            client-secret: ui-client-secret
+            authorization-grant-type: authorization_code
+            scope: openid, profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            provider: keycloak
+        provider:
+          keycloak:
+            issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/bank-realm}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      accountClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh
+    health:
+      show-details: always
+
+
